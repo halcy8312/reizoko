@@ -1,7 +1,7 @@
-import os
 import json
 from linebot.models import RichMenu, RichMenuArea, RichMenuSize, MessageAction, RichMenuBounds
 from app.config import Config
+import os
 
 def create_rich_menu(line_bot_api):
     rich_menu = RichMenu(

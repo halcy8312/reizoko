@@ -1,4 +1,4 @@
-from linebot.models import FlexSendMessage, BubbleContainer, BoxComponent, TextComponent
+from linebot.models import FlexSendMessage, BubbleContainer, BoxComponent, TextComponent, FillerComponent
 
 def create_ingredient_list_flex(ingredients):
     contents = [
