@@ -1,3 +1,4 @@
+import json
 from linebot.models import RichMenu, RichMenuArea, RichMenuSize, MessageAction, RichMenuBounds
 from app.config import Config
 import os
@@ -28,17 +29,34 @@ def create_rich_menu(line_bot_api):
         ]
     )
 
-    rich_menu_id = line_bot_api.create_rich_menu(rich_menu)
+    try:
+        rich_menu_json = json.dumps(rich_menu.as_json_dict())
+        print(f"Sending rich menu: {rich_menu_json}")
+        rich_menu_id = line_bot_api.create_rich_menu(rich_menu)
+        print(f"Created rich menu with id: {rich_menu_id}")
+    except Exception as e:
+        print(f"Error creating rich menu: {str(e)}")
+        return None
 
     # リッチメニューの画像ファイルのパスを取得
     current_dir = os.path.dirname(os.path.abspath(__file__))
     image_path = os.path.join(current_dir, '..', '..', 'static', 'rich_menu_image.png')
 
     # リッチメニューの画像をアップロード
-    with open(image_path, "rb") as f:
-        line_bot_api.set_rich_menu_image(rich_menu_id, "image/png", f)
+    try:
+        with open(image_path, "rb") as f:
+            line_bot_api.set_rich_menu_image(rich_menu_id, "image/png", f)
+        print("Uploaded rich menu image successfully")
+    except Exception as e:
+        print(f"Error uploading rich menu image: {str(e)}")
+        return None
 
     # デフォルトのリッチメニューとして設定
-    line_bot_api.set_default_rich_menu(rich_menu_id)
+    try:
+        line_bot_api.set_default_rich_menu(rich_menu_id)
+        print("Set as default rich menu successfully")
+    except Exception as e:
+        print(f"Error setting default rich menu: {str(e)}")
+        return None
 
     return rich_menu_id
