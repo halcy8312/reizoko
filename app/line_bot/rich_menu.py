@@ -1,10 +1,8 @@
-from linebot import LineBotApi
-from linebot.models import RichMenu, RichMenuArea, RichMenuSize, MessageAction
+from linebot.models import RichMenu, RichMenuArea, RichMenuSize, MessageAction, RichMenuBounds
 from app.config import Config
+import os
 
-line_bot_api = LineBotApi(Config.LINE_CHANNEL_ACCESS_TOKEN)
-
-def create_rich_menu():
+def create_rich_menu(line_bot_api):
     rich_menu = RichMenu(
         size=RichMenuSize(width=2500, height=1686),
         selected=True,
@@ -31,6 +29,16 @@ def create_rich_menu():
     )
 
     rich_menu_id = line_bot_api.create_rich_menu(rich_menu)
-    with open("path_to_your_rich_menu_image.png", "rb") as f:
+
+    # リッチメニューの画像ファイルのパスを取得
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    image_path = os.path.join(current_dir, '..', '..', 'static', 'rich_menu_image.png')
+
+    # リッチメニューの画像をアップロード
+    with open(image_path, "rb") as f:
         line_bot_api.set_rich_menu_image(rich_menu_id, "image/png", f)
+
+    # デフォルトのリッチメニューとして設定
     line_bot_api.set_default_rich_menu(rich_menu_id)
+
+    return rich_menu_id
