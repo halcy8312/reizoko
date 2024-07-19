@@ -4,8 +4,7 @@ from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, TextMessage
 from app.line_bot.messages import process_message, get_quick_reply
 
-def setup_line_bot(app, refrigerator_manager, recipe_suggester):
-    line_bot_api = LineBotApi(app.config['LINE_CHANNEL_ACCESS_TOKEN'])
+def setup_line_bot(app, line_bot_api, refrigerator_manager, recipe_suggester):
     handler = WebhookHandler(app.config['LINE_CHANNEL_SECRET'])
 
     @app.route("/callback", methods=['POST'])
@@ -26,3 +25,5 @@ def setup_line_bot(app, refrigerator_manager, recipe_suggester):
             event.reply_token,
             TextSendMessage(text=reply_text, quick_reply=quick_reply)
         )
+
+    return handler  # handlerを返すことで、アプリケーションで使用できるようにします
