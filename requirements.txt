@@ -1,6 +1,7 @@
 Flask
 psycopg2-binary
 SQLAlchemy
+flask_sqlalchemy
 line-bot-sdk
 openai
 gunicorn
