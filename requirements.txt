@@ -3,3 +3,4 @@ psycopg2-binary
 SQLAlchemy
 line-bot-sdk
 openai
+gunicorn
