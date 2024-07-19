@@ -1,4 +1,4 @@
-from app.main import db
+from app import db
 
 class RefrigeratorItem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
