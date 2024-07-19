@@ -14,7 +14,7 @@ class RefrigeratorManager:
     def get_contents(self):
         if not self.contents:
             return "冷蔵庫は空です。"
-        return "\n".join([f"{item}: {count}" for item, count in self.contents.items()])
+        return [f"{item}: {count}" for item, count in self.contents.items()]
 
     def get_items(self):
         return list(self.contents.keys())

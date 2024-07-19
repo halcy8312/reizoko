@@ -9,14 +9,10 @@ def get_quick_reply():
     ])
 
 def process_message(text, refrigerator_manager, recipe_suggester):
-    if text.startswith('追加:'):
-        item = text[3:].strip()
-        refrigerator_manager.add_item(item)
-        return f"{item}を冷蔵庫に追加しました。"
-    elif text.startswith('削除:'):
-        item = text[3:].strip()
-        refrigerator_manager.remove_item(item)
-        return f"{item}を冷蔵庫から削除しました。"
+    if text == '食材追加':
+        return "追加する食材名を教えてください。"
+    elif text == '食材削除':
+        return "削除する食材名を教えてください。"
     elif text == '冷蔵庫確認':
         contents = refrigerator_manager.get_contents()
         if contents:
@@ -30,9 +26,24 @@ def process_message(text, refrigerator_manager, recipe_suggester):
             return f"提案レシピ:\n{recipe}"
         else:
             return "冷蔵庫が空なので、レシピを提案できません。"
-    elif text == '食材追加':
-        return "追加する食材名を教えてください。\n例: 追加:りんご"
-    elif text == '食材削除':
-        return "削除する食材名を教えてください。\n例: 削除:りんご"
     else:
-        return "コマンドが認識できません。\n'食材追加'、'食材削除'、'冷蔵庫確認'、'レシピ提案' のいずれかを選択するか、\n'追加:食材名' または '削除:食材名' の形式で入力してください。"
+        # 追加・削除の入力処理
+        if text.startswith('追加:'):
+            item = text[3:].strip()
+            refrigerator_manager.add_item(item)
+            return f"{item}を冷蔵庫に追加しました。"
+        elif text.startswith('削除:'):
+            item = text[3:].strip()
+            refrigerator_manager.remove_item(item)
+            return f"{item}を冷蔵庫から削除しました。"
+        else:
+            # 新たに追加・削除を検出
+            item = text.strip()
+            if text.startswith('追加'):
+                refrigerator_manager.add_item(item[3:])
+                return f"{item[3:]}を冷蔵庫に追加しました。"
+            elif text.startswith('削除'):
+                refrigerator_manager.remove_item(item[3:])
+                return f"{item[3:]}を冷蔵庫から削除しました。"
+            else:
+                return "食材名を教えてください。"
