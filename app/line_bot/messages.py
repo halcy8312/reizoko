@@ -28,22 +28,19 @@ def process_message(text, refrigerator_manager, recipe_suggester):
             return "冷蔵庫が空なので、レシピを提案できません。"
     else:
         # 追加・削除の入力処理
-        if text.startswith('追加:'):
-            item = text[3:].strip()
+        if '追加' in text:
+            item = text.replace('追加', '').strip()
             refrigerator_manager.add_item(item)
             return f"{item}を冷蔵庫に追加しました。"
-        elif text.startswith('削除:'):
-            item = text[3:].strip()
+        elif '削除' in text:
+            item = text.replace('削除', '').strip()
             refrigerator_manager.remove_item(item)
             return f"{item}を冷蔵庫から削除しました。"
         else:
-            # 新たに追加・削除を検出
-            item = text.strip()
-            if text.startswith('追加'):
-                refrigerator_manager.add_item(item[3:])
-                return f"{item[3:]}を冷蔵庫に追加しました。"
-            elif text.startswith('削除'):
-                refrigerator_manager.remove_item(item[3:])
-                return f"{item[3:]}を冷蔵庫から削除しました。"
-            else:
-                return "食材名を教えてください。"
+            # 使い方のガイドメッセージ
+            return ("コマンドが認識できません。\n"
+                    "食材を追加するには「食材追加」と入力し、次に追加したい食材名を入力してください。\n"
+                    "食材を削除するには「食材削除」と入力し、次に削除したい食材名を入力してください。\n"
+                    "その他のコマンド:\n"
+                    "- 冷蔵庫確認\n"
+                    "- レシピ提案")
