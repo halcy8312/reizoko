@@ -1,7 +1,7 @@
+import os
 import json
 from linebot.models import RichMenu, RichMenuArea, RichMenuSize, MessageAction, RichMenuBounds
 from app.config import Config
-import os
 
 def create_rich_menu(line_bot_api):
     rich_menu = RichMenu(
@@ -41,6 +41,12 @@ def create_rich_menu(line_bot_api):
     # リッチメニューの画像ファイルのパスを取得
     current_dir = os.path.dirname(os.path.abspath(__file__))
     image_path = os.path.join(current_dir, '..', '..', 'static', 'rich_menu_image.png')
+    print(f"Image path: {image_path}")
+
+    # 画像ファイルが存在するか確認
+    if not os.path.exists(image_path):
+        print(f"Error: Image file not found at {image_path}")
+        return None
 
     # リッチメニューの画像をアップロード
     try:
