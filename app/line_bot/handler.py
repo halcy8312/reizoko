@@ -37,11 +37,13 @@ def setup_line_bot(app, line_bot_api, refrigerator_manager, recipe_suggester):
 
     @handler.add(MessageEvent, message=TextMessage)
     def handle_message(event):
+        logging.info(f"Received message: {event.message.text}")
         reply_text = process_message(event.message.text, refrigerator_manager, recipe_suggester)
         quick_reply = get_quick_reply()
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text=reply_text, quick_reply=quick_reply)
         )
+        logging.info(f"Replied with message: {reply_text}")
 
     return handler

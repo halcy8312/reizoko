@@ -4,8 +4,10 @@ from app.refrigerator.manager import RefrigeratorManager
 from app.recipe.suggester import RecipeSuggester
 from app.line_bot.rich_menu import create_rich_menu
 from linebot import LineBotApi
+import logging
 
 app = create_app()
+logging.basicConfig(level=logging.INFO)
 
 line_bot_api = LineBotApi(app.config['LINE_CHANNEL_ACCESS_TOKEN'])
 
@@ -16,4 +18,4 @@ setup_line_bot(app, line_bot_api, refrigerator_manager, recipe_suggester)
 create_rich_menu(line_bot_api)
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host='0.0.0.0', port=8000)
