@@ -19,7 +19,12 @@ from linebot.models import (
 )
 from app.line_bot.messages import process_message, get_quick_reply
 
-def setup_line_bot(app, line_bot_api, handler, refrigerator_manager, recipe_suggester):
+def setup_line_bot(app):
+    line_bot_api = LineBotApi(app.config['LINE_CHANNEL_ACCESS_TOKEN'])
+    handler = WebhookHandler(app.config['LINE_CHANNEL_SECRET'])
+    refrigerator_manager = RefrigeratorManager(db)
+    recipe_suggester = RecipeSuggester(app.config['OPENAI_API_KEY'])
+
     @app.route("/callback", methods=['POST'])
     def callback():
         signature = request.headers['X-Line-Signature']
