@@ -5,6 +5,7 @@ from app.recipe.suggester import RecipeSuggester
 from app.line_bot.rich_menu import create_rich_menu
 from linebot import LineBotApi, WebhookHandler
 import logging
+import os
 
 app = create_app()
 logging.basicConfig(level=logging.INFO)
@@ -19,4 +20,5 @@ setup_line_bot(app, line_bot_api, handler, refrigerator_manager, recipe_suggeste
 create_rich_menu(line_bot_api)
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=8000)
+    port = int(os.environ.get('PORT', 8000))
+    app.run(host='0.0.0.0', port=port)
