@@ -1,4 +1,4 @@
-from app import db  # db をインポート
+from app import db
 
 class RefrigeratorItem(db.Model):
     id = db.Column(db.Integer, primary_key=True)

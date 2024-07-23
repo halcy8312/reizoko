@@ -1,4 +1,4 @@
-from app import create_app, db  # db をインポート
+from app import create_app, db
 from app.line_bot.handler import setup_line_bot
 from app.refrigerator.manager import RefrigeratorManager
 from app.recipe.suggester import RecipeSuggester

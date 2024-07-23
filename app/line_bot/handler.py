@@ -1,8 +1,9 @@
+import logging
 from flask import request, abort
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import (
-    MessageEvent, TextMessage, TextSendMessage,  # TextSendMessageをインポート
+    MessageEvent, TextMessage, TextSendMessage,
     SourceUser, SourceGroup, SourceRoom,
     TemplateSendMessage, ConfirmTemplate, MessageAction,
     ButtonsTemplate, ImageCarouselTemplate, ImageCarouselColumn, URIAction,
@@ -25,9 +26,12 @@ def setup_line_bot(app, line_bot_api, refrigerator_manager, recipe_suggester):
     def callback():
         signature = request.headers['X-Line-Signature']
         body = request.get_data(as_text=True)
+        logging.info(f"Request body: {body}")
+        logging.info(f"Signature: {signature}")
         try:
             handler.handle(body, signature)
         except InvalidSignatureError:
+            logging.error("Invalid signature. Check your channel access token/channel secret.")
             abort(400)
         return 'OK'
 
@@ -40,4 +44,4 @@ def setup_line_bot(app, line_bot_api, refrigerator_manager, recipe_suggester):
             TextSendMessage(text=reply_text, quick_reply=quick_reply)
         )
 
-    return handler  # handlerを返すことで、アプリケーションで使用できるようにします
+    return handler
