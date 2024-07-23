@@ -20,7 +20,6 @@ from linebot.models import (
 from app.line_bot.messages import process_message, get_quick_reply
 
 def setup_line_bot(app, line_bot_api, handler, refrigerator_manager, recipe_suggester):
-
     @app.route("/callback", methods=['POST'])
     def callback():
         signature = request.headers['X-Line-Signature']
@@ -42,5 +41,3 @@ def setup_line_bot(app, line_bot_api, handler, refrigerator_manager, recipe_sugg
             event.reply_token,
             TextSendMessage(text=reply_text, quick_reply=quick_reply)
         )
-
-    return handler
